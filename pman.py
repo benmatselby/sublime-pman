@@ -66,7 +66,11 @@ class PmanManualCommand(sublime_plugin.TextCommand):
             if not word.empty():
                 keyword = self.view.substr(word)
                 data = PmanCommand(keyword).execute()
-                self.render(keyword, data)
+
+                if data == '':
+                    sublime.error_message('There is no manual entry for "' + keyword + '"')
+                else:
+                    self.render(keyword, data)
 
     def render(self, keyword, output):
         try:
