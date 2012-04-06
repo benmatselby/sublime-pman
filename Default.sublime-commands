@@ -1,6 +1,10 @@
 [
     {
-        "caption": "Pman: Consult the manual",
-        "command": "pman_manual"
+        "caption": "Pman: Consult the manual for selection",
+        "command": "pman_manual_for_selection"
+    },
+    {
+        "caption": "Pman: Consult the manual for keyword",
+        "command": "pman_manual_for_keyword"
     }
 ]

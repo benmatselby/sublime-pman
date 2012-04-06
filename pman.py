@@ -58,19 +58,15 @@ class PmanCommand():
         return data
 
 
-class PmanManualCommand(sublime_plugin.TextCommand):
-    """Consult the manual command from the editor"""
-    def run(self, args):
-        for region in self.view.sel():
-            word = self.view.word(region)
-            if not word.empty():
-                keyword = self.view.substr(word)
-                data = PmanCommand(keyword).execute()
+class BasePman(sublime_plugin.TextCommand):
+    """Base class for pman functionality"""
+    def execute(self, keyword):
+        data = PmanCommand(keyword).execute()
 
-                if data == '':
-                    sublime.error_message('There is no manual entry for "' + keyword + '"')
-                else:
-                    self.render(keyword, data)
+        if data == '':
+            sublime.error_message('There is no manual entry for "' + keyword + '"')
+        else:
+            self.render(keyword, data)
 
     def render(self, keyword, output):
         try:
@@ -85,3 +81,19 @@ class PmanManualCommand(sublime_plugin.TextCommand):
         scratch_file.insert(edit, 0, output)
         scratch_file.end_edit(edit)
         scratch_file.set_read_only(True)
+
+
+class PmanManualForKeywordCommand(BasePman):
+    """Command to take entered input and run through pman"""
+    def run(self, args):
+        sublime.active_window().show_input_panel('Keyword', '', self.execute, None, None)
+
+
+class PmanManualForSelectionCommand(BasePman):
+    """Command to take the selection and run through pman"""
+    def run(self, args):
+        for region in self.view.sel():
+            word = self.view.word(region)
+            if not word.empty():
+                keyword = self.view.substr(word)
+                self.execute(keyword)
