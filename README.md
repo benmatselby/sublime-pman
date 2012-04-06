@@ -24,6 +24,12 @@ You can do this from:
 * Right-click in the editor
 * F1 on the keyboard (configurable)
 
+It enables you to:
+
+* Run the pman command for the selected word or the word where the cursor is currently pointing
+* Ask the user for input to then run through the pman command
+
+
 Configuration
 -------------
 
