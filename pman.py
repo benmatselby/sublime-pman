@@ -14,6 +14,7 @@ class Pref:
         Pref.bash_executable_path = settings.get('bash_executable_path', 'sh')
         Pref.pman_executable_path = settings.get('pman_executable_path', 'pman')
         Pref.pman_additional_args = settings.get('pman_additional_args', {})
+        Pref.use_output_panel = settings.get('use_output_panel', False)
 
 Pref.load()
 
@@ -74,13 +75,24 @@ class BasePman(sublime_plugin.TextCommand):
         except UnicodeDecodeError:
             output = output.decode(sublime.active_window().active_view().settings().get('fallback_encoding'))
 
-        scratch_file = sublime.active_window().new_file()
-        scratch_file.set_name('PHP Manual - ' + keyword)
-        scratch_file.set_scratch(True)
-        edit = scratch_file.begin_edit()
-        scratch_file.insert(edit, 0, output)
-        scratch_file.end_edit(edit)
-        scratch_file.set_read_only(True)
+        if Pref.use_output_panel:
+            self.output_view = sublime.active_window().get_output_panel("pman")
+            self.output_view.set_read_only(False)
+            edit = self.output_view.begin_edit()
+            region = sublime.Region(0, self.output_view.size())
+            self.output_view.erase(edit, region)
+            self.output_view.insert(edit, 0, output)
+            self.output_view.end_edit(edit)
+            self.output_view.set_read_only(True)
+            sublime.active_window().run_command("show_panel", {"panel": "output.pman"})
+        else:
+            scratch_file = sublime.active_window().new_file()
+            scratch_file.set_name('PHP Manual - ' + keyword)
+            scratch_file.set_scratch(True)
+            edit = scratch_file.begin_edit()
+            scratch_file.insert(edit, 0, output)
+            scratch_file.end_edit(edit)
+            scratch_file.set_read_only(True)
 
 
 class PmanManualForKeywordCommand(BasePman):

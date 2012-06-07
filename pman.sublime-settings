@@ -18,5 +18,8 @@
     //     "key": "value",
     //     "-h"
     // }
-    "pman_additional_args": {}
+    "pman_additional_args": {},
+
+    // Use the output panel instead of a scratch buffer to show man page
+    "use_output_panel": false
 }
