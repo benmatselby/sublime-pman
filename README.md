@@ -39,6 +39,7 @@ You can configure:
 * bash_executable_path - The path to the bash executable. If empty string, use PATH to find it
 * pman_executable_path - The path to the pman executable. If empty string, use PATH to find it
 * pman_additional_args - This is the extra information you want to pass to the pman command.
+* use_output_panel - Show manual in an output panel instead of a scratch buffer
 
 
 Requirements
