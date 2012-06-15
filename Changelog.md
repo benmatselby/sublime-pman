@@ -1,6 +1,10 @@
 Sublime pman (PHP Manual) Plugin Changelog
 ==========================================
 
+1.3
+---
+* Now displays the manual page in an output panel thanks to [John Watson](https://github.com/jotson)
+
 1.2
 ---
 * Added ability to ask user for keyword and then run through pman
