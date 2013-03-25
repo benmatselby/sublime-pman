@@ -25,7 +25,7 @@ Pref.load()
 def debug_message(msg):
     """Debug functionality"""
     if Pref.show_debug == True:
-        print "[pman] " + msg
+        print("[pman] " + msg)
 
 
 class PmanCommand():
@@ -45,10 +45,7 @@ class PmanCommand():
         pman = subprocess.Popen(pmanCmd, stdout=subprocess.PIPE)
         col = subprocess.Popen(colCmd, stdout=subprocess.PIPE, stdin=pman.stdout)
 
-        data = None
-        if col.stdout:
-            data = col.communicate()[0]
-
+        data = col.communicate()[0]
         return data
 
 
@@ -57,25 +54,24 @@ class BasePman(sublime_plugin.TextCommand):
     def execute(self, keyword):
         data = PmanCommand(keyword).execute()
 
+        try:
+            data = data.decode('utf-8')
+        except UnicodeDecodeError:
+            data = output.decode(sublime.active_window().active_view().settings().get('fallback_encoding'))
+
         if data == '':
             sublime.error_message('There is no manual entry for "' + keyword + '"')
         else:
             self.render(keyword, data)
 
     def render(self, keyword, output):
-        try:
-            output = output.decode('utf-8')
-        except UnicodeDecodeError:
-            output = output.decode(sublime.active_window().active_view().settings().get('fallback_encoding'))
+        output_view = sublime.active_window().get_output_panel("pman")
+        output_view.set_read_only(False)
+        output_view.run_command('output_helper', {'text': output})
 
-        self.output_view = sublime.active_window().get_output_panel("pman")
-        self.output_view.set_read_only(False)
-        edit = self.output_view.begin_edit()
-        region = sublime.Region(0, self.output_view.size())
-        self.output_view.erase(edit, region)
-        self.output_view.insert(edit, 0, output)
-        self.output_view.end_edit(edit)
-        self.output_view.set_read_only(True)
+        output_view.sel().clear()
+        output_view.sel().add(sublime.Region(0))
+        output_view.set_read_only(True)
         sublime.active_window().run_command("show_panel", {"panel": "output.pman"})
 
 
@@ -93,3 +89,12 @@ class PmanManualForSelectionCommand(BasePman):
             if not word.empty():
                 keyword = self.view.substr(word)
                 self.execute(keyword)
+
+
+class OutputHelper(sublime_plugin.TextCommand):
+    """Help render the data to the screen for ST3"""
+    def run(self, edit, text = None):
+        if text:
+            self.view.insert(edit, self.view.size(), text)
+
+        return

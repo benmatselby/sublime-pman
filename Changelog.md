@@ -1,6 +1,10 @@
 Sublime pman (PHP Manual) Plugin Changelog
 ==========================================
 
+1.5
+---
+* Support for Sublime Text 3
+
 1.4
 ---
 * Changed the way we get the return data from the terminal
