@@ -1,16 +1,16 @@
 Sublime Pman (PHP Manual) Plugin
 ================================
 
-This plugin adds context menus for consulting the php manual from within the editor (pman)
+This plugin adds context menus for consulting the php manual from within the editor (pman). Supports Sublime Text 2 and 3
 
 Installation
 ------------
 
-Use Sublime Text 2's [Package Control](http://wbond.net/sublime_packages/package_control) (Preferences -> Package Control -> Install Package -> Pman) to install this plugin.
+Use Sublime Text's [Package Control](http://wbond.net/sublime_packages/package_control) (Preferences -> Package Control -> Install Package -> Pman) to install this plugin.
 
 Or
 
-Simply checkout the git repo into “~/Library/Application Support/Sublime Text 2/Packages/Pman or the equivalent folder on Windows or Linux.
+Simply checkout the git repo into “~/Library/Application Support/Sublime Text [VERSION-NUMBER]/Packages/Pman or the equivalent folder on Windows or Linux.
 
 
 Overview
