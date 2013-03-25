@@ -1,6 +1,10 @@
 Sublime pman (PHP Manual) Plugin Changelog
 ==========================================
 
+1.4
+---
+* Changed the way we get the return data from the terminal
+
 1.3.1
 -----
 * Minor bug fix for the key mappings

@@ -11,17 +11,15 @@ class Pref:
     @staticmethod
     def load():
         Pref.show_debug = settings.get('show_debug', False)
-        Pref.bash_executable_path = settings.get('bash_executable_path', 'sh')
         Pref.pman_executable_path = settings.get('pman_executable_path', 'pman')
-        Pref.pman_additional_args = settings.get('pman_additional_args', {})
+        Pref.pman_col_executable_path = settings.get('pman_col_executable_path', 'col')
 
 Pref.load()
 
 [settings.add_on_change(setting, Pref.load) for setting in [
     'show_debug',
-    'bash_executable_path',
-    'pman_additional_args',
-    'pman_executable_path']]
+    'pman_executable_path',
+    'pman_col_executable_path']]
 
 
 def debug_message(msg):
@@ -36,24 +34,20 @@ class PmanCommand():
         self.entity = entity
 
     def execute(self):
-        cmd = [Pref.bash_executable_path]
-        cmd.append('-c')
-        cmd.append(Pref.pman_executable_path + ' ' + self.entity + ' | ' + 'col -b')
+        pmanCmd = [Pref.pman_executable_path]
+        pmanCmd.append(self.entity)
+        colCmd = [Pref.pman_col_executable_path]
+        colCmd.append('-b')
 
-        for key, value in Pref.pman_additional_args.items():
-            arg = key
-            if value != "":
-                arg += "=" + value
-            cmd.append(arg)
+        debug_message(' '.join(pmanCmd))
+        debug_message(' '.join(colCmd))
 
-        debug_message(' '.join(cmd))
-
-        shell = sublime.platform() == "windows"
-        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=shell)
+        pman = subprocess.Popen(pmanCmd, stdout=subprocess.PIPE)
+        col = subprocess.Popen(colCmd, stdout=subprocess.PIPE, stdin=pman.stdout)
 
         data = None
-        if proc.stdout:
-            data = proc.communicate()[0]
+        if col.stdout:
+            data = col.communicate()[0]
 
         return data
 

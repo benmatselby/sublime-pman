@@ -36,9 +36,8 @@ Configuration
 You can configure:
 
 * show_debug - Do you want the debug information to be sent to the console?
-* bash_executable_path - The path to the bash executable. If empty string, use PATH to find it
 * pman_executable_path - The path to the pman executable. If empty string, use PATH to find it
-* pman_additional_args - This is the extra information you want to pass to the pman command.
+* pman_col_executable_path - This is a secondary command to format the output correctly. Use `which col` to get the correct path
 
 
 Requirements
