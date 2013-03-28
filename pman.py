@@ -5,21 +5,24 @@ import time
 import sublime
 import sublime_plugin
 
-settings = sublime.load_settings('pman.sublime-settings')
-
 class Pref:
     @staticmethod
     def load():
+        settings = sublime.load_settings('pman.sublime-settings')
         Pref.show_debug = settings.get('show_debug', False)
         Pref.pman_executable_path = settings.get('pman_executable_path', 'pman')
         Pref.pman_col_executable_path = settings.get('pman_col_executable_path', 'col')
 
-Pref.load()
 
-[settings.add_on_change(setting, Pref.load) for setting in [
-    'show_debug',
-    'pman_executable_path',
-    'pman_col_executable_path']]
+st_version = 2
+if sublime.version() == '' or int(sublime.version()) > 3000:
+    st_version = 3
+
+if st_version == 2:
+    Pref.load()
+
+def plugin_loaded():
+    Pref.load()
 
 
 def debug_message(msg):
