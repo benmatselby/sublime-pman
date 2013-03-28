@@ -34,7 +34,7 @@
                             },
                             {
                                 "command": "open_file",
-                                "args": {"file": "${packages}/Pman/pman.sublime-settings"},
+                                "args": {"file": "${packages}/User/pman.sublime-settings"},
                                 "caption": "Settings – User"
                             },
                             { "caption": "-" },
